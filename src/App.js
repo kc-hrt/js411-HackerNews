@@ -1,39 +1,37 @@
 import React from "react";
-import './App.css';
+import Article from "./Components/Article";
 
-const URL = "https://hn.algolia.com/api/v1/search?tags=front_page";
 
+const URL = 'http://hn.algolia.com/api/v1/search';
 
 class App extends React.Component {
   constructor(props) {
-    super(props)
-
+    super(props);
     this.state = {
-      arrayOfNews: [], 
-    }
+      articles: [],
+    };
   }
 
+  async componentDidMount() {
+    console.log('mounted 🌵', this.state.articles);
+    const res = await fetch(URL);
+    const data = await res.json();
+    this.setState({
+      articles: data.hits,
+    });
+  }
 
-  componentDidMount(){
-    console.log(this.state.arrayOfNews)
-    fetch(URL)
-      .then((response) => response.json())
-      .then((data) => 
-        this.setState({
-          arrayOfNews: data
-        }) 
-        );
-      } 
+  componentDidUpdate() {
+    console.log('updated ☀️', this.state.articles);
+  }
 
-
-   render(){
-    return (
-      <div >
-        hello
-      </div>
-     )
-  };
-};
-
+  render() {
+    return <div className='grid'>
+      {this.state.articles.map((article) => {
+        return <Article singleArticle={article} />
+      })}
+    </div>;
+  }
+}
 
 export default App;
