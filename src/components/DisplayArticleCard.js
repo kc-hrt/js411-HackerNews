@@ -10,12 +10,14 @@ class DisplayArticleCard extends Component {
   }
 
   render() {
+    const { url, title, points, author, created_at, num_comments } = this.props.singleArticle;
+
     return (
       <article>
-        <a className="title" href={this.props.singleArticle.url} target="_blank" rel='noreferrer noopener'>{this.props.singleArticle.title}</a>
-        <span className="url-text">{this.props.singleArticle.url}</span>
+        <a className="title" href={url} target="_blank" rel='noreferrer noopener'>{title}</a>
+        <span className="url-text">{url}</span>
         <div className="story-text">
-          {this.props.singleArticle.points} points | {this.props.singleArticle.author} | {this.props.singleArticle.created_at} | {this.props.singleArticle.num_comments} comments
+          {points} points | {author} | {created_at} | {num_comments} comments
         </div>
       </article>
     )
