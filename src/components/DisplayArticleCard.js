@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './DisplayArticleCard.css'
 
 class DisplayArticleCard extends Component {
   constructor(props) {
@@ -14,8 +15,8 @@ class DisplayArticleCard extends Component {
 
     return (
       <article>
-        <a className="title" href={url} target="_blank" rel='noreferrer noopener'>{title}</a>
-        <span className="url-text">{url}</span>
+        <a className="title" href={url} target="_blank" rel='noreferrer noopener'>{title} </a>
+        <span className="url-text">({url})</span>
         <div className="story-text">
           {points} points | {author} | {created_at} | {num_comments} comments
         </div>
