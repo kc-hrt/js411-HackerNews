@@ -1,24 +1,24 @@
-import React from "react";
-import Article from "./Components/Article";
+import React from 'react';
+import ListArticles from './Components/ListArticles'
+import './App.css';
 
-
-const URL = 'http://hn.algolia.com/api/v1/search';
+const URL = 'https://hn.algolia.com/api/v1/search';
 
 class App extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-      articles: [],
-    };
+      articles: []
+    }
   }
 
   async componentDidMount() {
     console.log('mounted 🌵', this.state.articles);
-    const res = await fetch(URL);
-    const data = await res.json();
-    this.setState({
-      articles: data.hits,
-    });
+    let res = await fetch(URL);
+    let data = await res.json();
+    this.setState({      
+      articles: data.hits
+    })
   }
 
   componentDidUpdate() {
@@ -26,11 +26,12 @@ class App extends React.Component {
   }
 
   render() {
-    return <div className='grid'>
-      {this.state.articles.map((article) => {
-        return <Article singleArticle={article} />
-      })}
-    </div>;
+    return (
+      <div className="App">
+        {/* <SearchForm /> */}
+        <ListArticles articlesList={this.state.articles} />
+      </div>
+    );
   }
 }
 
