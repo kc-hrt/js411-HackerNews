@@ -2,25 +2,16 @@ import React, { Component } from "react";
 import "../App.css";
 
 export default class Article extends Component {
-  // state = {liked: false};
+  // constructor(props) {
+  //   super(props);
 
-  // clicked = () => {
-  //   this.setState({ liked: !this.state.liked });
-  //   console.log('🌈', this.state.liked);
-  // };
-
-  constructor(props) {
-    super(props);
-
-    console.log("🦖", props);
-    console.log("🦕", props.singleArticle.created_at);
-  }
+  //   console.log("🦖", props);
+  //   console.log("🦕", props.singleArticle.created_at);
+  // }
 
   render() {
-    // let btnColor = this.state.liked ? "green" : "black";
-    // let btnText = this.state.liked ? "👍" : "like";
     return (
-      <article>
+      <article key={this.props.singleArticle.objectID}>
         <a className="title" href={this.props.singleArticle.url}>
           {this.props.singleArticle.title}
         </a>

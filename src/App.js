@@ -1,17 +1,20 @@
 import React from "react";
 import Article from "./Components/ListArticles";
-import SearchForm from "./Components/SearchForm";
 
-let URL = "http://hn.algolia.com/api/v1/search";
+let URL = "https://hn.algolia.com/api/v1/search_by_date?tags=story";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       searchTerm: "",
-      searchSelect: "",
+      searchSelect: "story",
+      searchSort: "",
       articles: [],
     };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   async componentDidMount() {
@@ -27,26 +30,108 @@ class App extends React.Component {
     console.log("updated ☀️", this.state.articles);
   }
 
-  searchedItems = (items) => {
-    console.log("these are searched items", items);
-    this.setState({ articles: items });
+  updateFetch = (URLsearch) => {
+    console.log("🐝📓", URLsearch);
+    fetch(URLsearch)
+      .then((res) => res.json())
+      .then((searchData) => {
+        console.log("🦋🧑‍🦳", searchData.hits);
+        this.setState({
+          articles: searchData.hits,
+        });
+        console.log("🦋📓", this.state.articles);
+      });
+  };
+  // handleSort = () => {
+  //   console.log("🦚", this.state.articles);
+  //   const sorted = this.state.articles.sort(
+  //     (a, b) => b.created_at_i - a.created_at_i
+  //   );
+  //   console.log("🌼", sorted);
+  //   this.setState({ articles: sorted });
+  // };
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("🍄", this.state.searchSelect);
+    // author search doesn't work
+    this.state.searchSelect === "author"
+      ? this.updateFetch(
+          `http://hn.algolia.com/api/v1/search?query=author_:${this.state.searchTerm}`
+        )
+      : this.updateFetch(
+          `http://hn.algolia.com/api/v1/search?query=${this.state.searchTerm}&tags=${this.state.searchSelect}`
+        );
   };
 
-  handleClick() {
-    const sorted = this.state.articles.sort(
-      (a, b) => b.created_at_i - a.created_at_i
-    );
-    this.setState({ articles: sorted });
-    console.log("articless after date click ", this.state.articles);
-  }
+  handleChange = (e) => {
+    this.setState({ searchTerm: e.target.value });
+  };
+
+  handleSelectChange = (e) => {
+    e.preventDefault();
+    console.log("🍄💭", e.target.value);
+    this.setState({ searchSelect: e.target.value });
+  };
+
+  handleSelectSort = (e) => {
+    e.preventDefault();
+    console.log("💐", e.target.value);
+    this.setState({ searchSort: e.target.value });
+    if (e.target.value === "byDate") {
+      console.log("🦚", this.state.articles);
+      const sorted = this.state.articles.sort(
+        (a, b) => b.created_at_i - a.created_at_i
+      );
+      console.log("🌼", sorted);
+      this.setState({ articles: sorted });
+    } else {
+      console.log("🦚", this.state.articles);
+      const sorted = this.state.articles.sort((a, b) => b.points - a.points);
+      console.log("🌼", sorted);
+      this.setState({ articles: sorted });
+    }
+  };
 
   render() {
     return (
       <div className="container">
-        <SearchForm />
+        <div className="search-bar">
+          <form onSubmit={this.handleSubmit} className="searchContainer">
+            <input
+              className="inputBar"
+              type="text"
+              onChange={this.handleChange}
+            />
+            <input type="submit" value="Submit" />
+            <label>
+              Search in:
+              <select
+                value={this.state.searchSelect}
+                name={this.props.name}
+                onChange={this.handleSelectChange.bind(this)}
+              >
+                <option value="story">📓 Stories</option>
+                <option value="author">🧑‍🦳 Authors</option>
+                <option value="comment">💭 Comments</option>
+              </select>
+            </label>
+            <label>
+              Sort by:
+              <select
+                value={this.state.searchSort}
+                name={this.props.name}
+                onChange={this.handleSelectSort.bind(this)}
+              >
+                <option value="byDate">📓 Date</option>
+                <option value="byPopularity">🧑‍🦳 Popularity</option>
+              </select>
+            </label>
+          </form>
+        </div>
         <div>
-          {this.state.articles.map((article) => {
-            return <Article singleArticle={article} />;
+          {this.state.articles.map((article, index) => {
+            return <Article singleArticle={article} key={index} />;
           })}
         </div>
       </div>
