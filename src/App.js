@@ -9,7 +9,8 @@ class App extends React.Component {
     this.state = {
       searchTerm: "",
       searchSelect: "story",
-      searchSort: "",
+      searchBy: "byPopulatity",
+      searchRange: "all",
       articles: [],
     };
 
@@ -42,26 +43,28 @@ class App extends React.Component {
         console.log("🦋📓", this.state.articles);
       });
   };
-  // handleSort = () => {
-  //   console.log("🦚", this.state.articles);
-  //   const sorted = this.state.articles.sort(
-  //     (a, b) => b.created_at_i - a.created_at_i
-  //   );
-  //   console.log("🌼", sorted);
-  //   this.setState({ articles: sorted });
-  // };
 
   handleSubmit = (e) => {
     e.preventDefault();
     console.log("🍄", this.state.searchSelect);
     // author search doesn't work
-    this.state.searchSelect === "author"
-      ? this.updateFetch(
-          `http://hn.algolia.com/api/v1/search?query=author_:${this.state.searchTerm}`
-        )
-      : this.updateFetch(
-          `http://hn.algolia.com/api/v1/search?query=${this.state.searchTerm}&tags=${this.state.searchSelect}`
-        );
+    if (this.state.searchRange === "all") {
+      this.state.searchSelect === "author"
+        ? this.updateFetch(
+            `https://hn.algolia.com/api/v1/search?tags=story,author_${this.state.searchTerm}`
+          )
+        : this.updateFetch(
+            `http://hn.algolia.com/api/v1/search?query=${this.state.searchTerm}&tags=${this.state.searchSelect}`
+          );
+    } else {
+      this.state.searchSelect === "author"
+        ? this.updateFetch(
+            `https://hn.algolia.com/api/v1/search?tags=story,author_${this.state.searchTerm}&numericFilters=created_at_i>${this.state.searchRange}`
+          )
+        : this.updateFetch(
+            `http://hn.algolia.com/api/v1/search?query=${this.state.searchTerm}&tags=${this.state.searchSelect}&numericFilters=created_at_i>${this.state.searchRange}`
+          );
+    }
   };
 
   handleChange = (e) => {
@@ -77,7 +80,7 @@ class App extends React.Component {
   handleSelectSort = (e) => {
     e.preventDefault();
     console.log("💐", e.target.value);
-    this.setState({ searchSort: e.target.value });
+    this.setState({ searchBy: e.target.value });
     if (e.target.value === "byDate") {
       console.log("🦚", this.state.articles);
       const sorted = this.state.articles.sort(
@@ -93,6 +96,48 @@ class App extends React.Component {
     }
   };
 
+  handleSearchRange = (e) => {
+    e.preventDefault();
+    let searchDate = new Date();
+    switch (e.target.value) {
+      case "all":
+        console.log("🎃", e.target.value);
+        this.setState({ searchRange: "all" });
+        break;
+      case "last24h":
+        console.log("🎃", e.target.value);
+        searchDate.setDate(searchDate.getDate() - 1);
+        this.setState({
+          searchRange: searchDate.valueOf().toString().slice(0, 10),
+        });
+        break;
+      case "pastWeek":
+        console.log("🎃", e.target.value);
+        searchDate.setDate(searchDate.getDate() - 7);
+        this.setState({
+          searchRange: searchDate.valueOf().toString().slice(0, 10),
+        });
+        break;
+      case "pastMonth":
+        console.log("🎃", e.target.value);
+        searchDate.setMonth(searchDate.getMonth() - 1);
+        this.setState({
+          searchRange: searchDate.valueOf().toString().slice(0, 10),
+        });
+        break;
+      case "pastYear":
+        console.log("🎃", e.target.value);
+        searchDate.setFullYear(searchDate.getFullYear() - 1);
+        this.setState({
+          searchRange: searchDate.valueOf().toString().slice(0, 10),
+        });
+
+        break;
+      default:
+        console.log("💥", e.target.value);
+    }
+  };
+
   render() {
     return (
       <div className="container">
@@ -105,7 +150,7 @@ class App extends React.Component {
             />
             <input type="submit" value="Submit" />
             <label>
-              Search in:
+              Search
               <select
                 value={this.state.searchSelect}
                 name={this.props.name}
@@ -117,14 +162,27 @@ class App extends React.Component {
               </select>
             </label>
             <label>
-              Sort by:
+              by
               <select
-                value={this.state.searchSort}
+                value={this.state.searchBy}
                 name={this.props.name}
                 onChange={this.handleSelectSort.bind(this)}
               >
                 <option value="byDate">📓 Date</option>
                 <option value="byPopularity">🧑‍🦳 Popularity</option>
+              </select>
+            </label>
+            <label>
+              for
+              <select
+                name={this.props.name}
+                onChange={this.handleSearchRange.bind(this)}
+              >
+                <option value="all">All Time</option>
+                <option value="last24h">Last 24h</option>
+                <option value="pastWeek">Past Week</option>
+                <option value="pastMonth">Past Month</option>
+                <option value="pastYear">Past Year</option>
               </select>
             </label>
           </form>
