@@ -1,0 +1,73 @@
+.story-container {
+  width: 80vw;
+  border-bottom: 2px solid black;
+  padding: 10px;
+}
+
+.container {
+  width: calc(85% - 10px);
+  margin: 0 auto;
+  background-color: #F6F6EF;
+}
+
+.searchContainer {
+  background-color: #FF742B;
+  margin: auto;
+  padding: 10px 10px 10px 10px;
+}
+
+h2 {
+  margin: 5px;
+}
+
+input {
+  margin-left: 5px;
+  margin-right: 10px;
+}
+label {
+  margin-left: 10px;
+}
+
+select {
+  margin-left: 5px;
+}
+
+article {
+  margin: 10px;
+}
+
+.title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: black;
+  text-decoration: none;
+  padding-right: 7px;
+}
+
+.url-text {
+  color: gray;
+  font-size: 0.7rem;
+  cursor: pointer;
+}
+
+.url-text:hover {
+  text-decoration: underline;
+}
+
+.story-text {
+  color: gray;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+.interested {
+  cursor: pointer;
+  display: inline-block;
+}
+.not-interested {
+  padding: 5px;
+  cursor: pointer;
+  display: inline-block;
+  background-color: #e7e3e3;
+  width: 100%;
+}
