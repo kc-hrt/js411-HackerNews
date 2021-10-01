@@ -1,6 +1,6 @@
-import React from 'react';
-import ListArticles from './components/ListArticles'
-import './App.css';
+import React from "react";
+import ListArticles from "./components/ListArticles";
+import "./App.css";
 
 let URL =
   "https://hn.algolia.com/api/v1/search_by_date?tags=story&hitsPerPage=100";
