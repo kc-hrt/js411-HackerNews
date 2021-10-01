@@ -7,11 +7,11 @@
 .container {
   width: calc(85% - 10px);
   margin: 0 auto;
-  background-color: #F6F6EF;
+  background-color: #f6f6ef;
 }
 
 .searchContainer {
-  background-color: #FF742B;
+  background-color: #ff742b;
   margin: auto;
   padding: 10px 10px 10px 10px;
 }
