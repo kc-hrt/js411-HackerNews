@@ -1,7 +1,9 @@
-import React from "react";
-import Article from "./Components/ListArticles";
+import React from 'react';
+import ListArticles from './components/ListArticles'
+import './App.css';
 
-let URL = "https://hn.algolia.com/api/v1/search_by_date?tags=story";
+let URL =
+  "https://hn.algolia.com/api/v1/search_by_date?tags=story&hitsPerPage=100";
 
 class App extends React.Component {
   constructor(props) {
@@ -51,18 +53,18 @@ class App extends React.Component {
     if (this.state.searchRange === "all") {
       this.state.searchSelect === "author"
         ? this.updateFetch(
-            `https://hn.algolia.com/api/v1/search?tags=story,author_${this.state.searchTerm}`
+            `https://hn.algolia.com/api/v1/search?tags=story,author_${this.state.searchTerm}&hitsPerPage=100`
           )
         : this.updateFetch(
-            `http://hn.algolia.com/api/v1/search?query=${this.state.searchTerm}&tags=${this.state.searchSelect}`
+            `http://hn.algolia.com/api/v1/search?query=${this.state.searchTerm}&tags=${this.state.searchSelect}&hitsPerPage=100`
           );
     } else {
       this.state.searchSelect === "author"
         ? this.updateFetch(
-            `https://hn.algolia.com/api/v1/search?tags=story,author_${this.state.searchTerm}&numericFilters=created_at_i>${this.state.searchRange}`
+            `https://hn.algolia.com/api/v1/search?tags=story,author_${this.state.searchTerm}&numericFilters=created_at_i>${this.state.searchRange}&hitsPerPage=100`
           )
         : this.updateFetch(
-            `http://hn.algolia.com/api/v1/search?query=${this.state.searchTerm}&tags=${this.state.searchSelect}&numericFilters=created_at_i>${this.state.searchRange}`
+            `http://hn.algolia.com/api/v1/search?query=${this.state.searchTerm}&tags=${this.state.searchSelect}&numericFilters=created_at_i>${this.state.searchRange}&hitsPerPage=100`
           );
     }
   };
@@ -187,11 +189,7 @@ class App extends React.Component {
             </label>
           </form>
         </div>
-        <div>
-          {this.state.articles.map((article, index) => {
-            return <Article singleArticle={article} key={index} />;
-          })}
-        </div>
+        <ListArticles articleList={this.state.articles} />
       </div>
     );
   }
