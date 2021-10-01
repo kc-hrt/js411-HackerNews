@@ -1,19 +1,23 @@
-import React, { Component } from 'react';
-import DisplayArticleCard from './DisplayArticleCard';
+import React, { Component } from "react";
+import Article from "./DisplayArticleCard";
 
-export default class Article extends Component {
+class ListArticles extends Component {
   constructor(props) {
-    super(props)
-    console.log(props)
+    super(props);
+
+    console.log("🦖", props.articleList);
+    // console.log("🦕", props.singleArticle.created_at);
   }
 
   render() {
     return (
-      <ul>
-        {this.props.articlesList.map((article) => {
-          return <DisplayArticleCard singleArticle={article} />
+      <div>
+        {this.props.articleList.map((article, index) => {
+          return <Article singleArticle={article} key={index} />;
         })}
-      </ul>
-    )
+      </div>
+    );
   }
 }
+
+export default ListArticles;
