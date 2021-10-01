@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import DisplayArticleCard from './DisplayArticleCard';
 
-class ListArticles extends Component {
+export default class Article extends Component {
   constructor(props) {
     super(props)
     console.log(props)
@@ -17,5 +17,3 @@ class ListArticles extends Component {
     )
   }
 }
-
-export default ListArticles;
